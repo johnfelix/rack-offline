@@ -50,7 +50,7 @@ module Rails
         end
         
         files = Dir[
-          "#{root}/**/*.html"
+          "#{root}/public/*.html"
         ]
         
         files.each do |file|
