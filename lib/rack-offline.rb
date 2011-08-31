@@ -34,7 +34,6 @@ module Rails
             "#{root}/images/**/*.*"]
         else 
           files = Dir[
-            "#{Rails.root}/**.css"
             "#{root}/**/*.css",
             "#{root}/**/*.js"
             ]
