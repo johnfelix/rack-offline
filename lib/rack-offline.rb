@@ -26,7 +26,7 @@ module Rails
 
     def cache_block(root)
       Proc.new do
-        if Rails.version <= "3.1"
+        if Rails.version < "3.1"
           files = Dir[
             "#{root}/**/*.html",
             "#{root}/stylesheets/**/*.css",
