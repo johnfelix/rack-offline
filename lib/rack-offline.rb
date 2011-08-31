@@ -9,7 +9,7 @@ module Rails
 
     def initialize(options = {}, app = Rails.application, &block)
       config = app.config
-      root = Rails.version < "3.1" ? config.paths.public.to_a.first : "#{Rails.root}"
+      root = Rails.version < "3.1" ? config.paths.public.to_a.first : Pathname.new("#{Rails.root}/app/assets")
 
       block = cache_block(Pathname.new(root)) unless block_given?
 
@@ -26,39 +26,26 @@ module Rails
 
     def cache_block(root)
       Proc.new do
-        if Rails.version < "3.1"
-          files = Dir[
-            "#{root}/stylesheets/**/*.css",
-            "#{root}/javascripts/**/*.js",
-            "#{root}/images/**/*.*"]
-        else 
-          files = Dir[
-            "#{root}/app/assets/**/*.css",
-            "#{root}/app/assets/**/*.js"
-            ]
-        end
-        
-        files.each do |file|
-          if Rails.version >= "3.1"
-            file = file.split("/")
-            file.delete_at(-2)
-            file.delete_at(-3)
-            file = file.join("/")
-          end
-          
-          cache Pathname.new(file).relative_path_from(root)
-        end
-        
         files = Dir[
-          "#{root}/public/*.html"
+          "#{root}/stylesheets/**/*.css",
+          "#{root}/javascripts/**/*.js",
+          "#{root}/images/**/*.*"
         ]
         
         files.each do |file|
-          cache Pathname.new(file).relative_path_from(root)
+          file_path = Rails.version < "3.1" ? Pathname.new(file).relative_path_from( root ) : relative_path(file, root)
+          cache file_path
         end
-        
+                
         network "/"
       end
+    end
+    
+    def relative_path(file, root)
+      path = Pathname.new(file).relative_path_from( root )
+      path = path.to_s.split("/")
+      path[0] = "assets"
+      path.join("/")
     end
 
   end
