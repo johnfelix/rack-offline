@@ -38,7 +38,7 @@ module Rails
           file_path[0] = "assets"
           file_path = file_path.join("/")
           
-          puts file_path
+          cache file_path
         end
                 
         network "/"
