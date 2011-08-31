@@ -42,7 +42,7 @@ module Rails
         files.each do |file|
           if Rails.version >= "3.1"
             file = file.split("/") 
-            file.delete_at(6)
+            file.delete_at(5)
             file = file.join("/")
           end
           cache Pathname.new(file).relative_path_from(root)
