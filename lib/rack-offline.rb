@@ -21,6 +21,13 @@ module Rails
 
       super opts, &block
     end
+    
+    def relative_path(file, root)
+      path = Pathname.new(file).relative_path_from( root )
+      path = path.to_s.split("/")
+      path[0] = "assets"
+      path.join("/")
+    end
 
   private
 
@@ -34,18 +41,11 @@ module Rails
         
         files.each do |file|
           file_path = Rails.version < "3.1" ? Pathname.new(file).relative_path_from( root ) : relative_path(file, root)
-          cache file_path
+          puts file_path
         end
                 
         network "/"
       end
-    end
-    
-    def relative_path(file, root)
-      path = Pathname.new(file).relative_path_from( root )
-      path = path.to_s.split("/")
-      path[0] = "assets"
-      path.join("/")
     end
 
   end
