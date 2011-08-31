@@ -9,7 +9,7 @@ module Rails
 
     def initialize(options = {}, app = Rails.application, &block)
       config = app.config
-      root = Rails.version < "3.1" ? config.paths.public.to_a.first : "#{Rails.root}/app/assets"
+      root = Rails.version < "3.1" ? config.paths.public.to_a.first : "#{Rails.root}"
 
       block = cache_block(Pathname.new(root)) unless block_given?
 
@@ -34,17 +34,20 @@ module Rails
             "#{root}/images/**/*.*"]
         else 
           files = Dir[
-            "#{root}/**/*.css",
-            "#{root}/**/*.js"
+            "#{root}/public/*.html",
+            "#{root}/app/assets/**/*.css",
+            "#{root}/app/assets/**/*.js"
             ]
         end
         
         files.each do |file|
           if Rails.version >= "3.1"
-            file = file.split("/") 
-            file.delete_at(5)
+            file = file.split("/")
+            file.delete_at(-2)
+            file.delete_at(-3)
             file = file.join("/")
           end
+          
           cache Pathname.new(file).relative_path_from(root)
         end
 
