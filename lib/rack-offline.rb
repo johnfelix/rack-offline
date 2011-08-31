@@ -29,13 +29,19 @@ module Rails
           files = Dir[
             "#{root}/stylesheets/**/*.css",
             "#{root}/javascripts/**/*.js",
-            "#{root}/images/**/*.*"
+            "#{root}/images/**/*.*",
+            "#{Rails.root}/public/*.html"
           ]
 
         files.each do |file|
           file_path = Pathname.new(file).relative_path_from( root )
           file_path = file_path.to_s.split("/")
-          file_path[0] = "assets"
+          
+          if file_path.last =~ /^*.html$/
+            3.times{ file_path.shift }
+          else
+            file_path[0] = "assets"
+          end
           file_path = file_path.join("/")
           
           cache file_path
