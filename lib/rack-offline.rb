@@ -21,26 +21,23 @@ module Rails
 
       super opts, &block
     end
-    
-    def relative_path(file, root)
-      path = Pathname.new(file).relative_path_from( root )
-      path = path.to_s.split("/")
-      path[0] = "assets"
-      path.join("/")
-    end
 
   private
 
     def cache_block(root)
       Proc.new do
-        files = Dir[
-          "#{root}/stylesheets/**/*.css",
-          "#{root}/javascripts/**/*.js",
-          "#{root}/images/**/*.*"
-        ]
-        
+          files = Dir[
+            "#{root}/stylesheets/**/*.css",
+            "#{root}/javascripts/**/*.js",
+            "#{root}/images/**/*.*"
+          ]
+
         files.each do |file|
-          file_path = Rails.version < "3.1" ? Pathname.new(file).relative_path_from( root ) : relative_path(file, root)
+          file_path = Pathname.new(file).relative_path_from( root )
+          file_path = file_path.to_s.split("/")
+          file_path[0] = "assets"
+          file_path = file_path.join("/")
+          
           puts file_path
         end
                 
