@@ -28,6 +28,7 @@ module Rails
       Proc.new do
         if Rails.version <= "3.1"
           files = Dir[
+            "#{root}/**/*.html",
             "#{root}/stylesheets/**/*.css",
             "#{root}/javascripts/**/*.js",
             "#{root}/images/**/*.*"]
@@ -49,15 +50,6 @@ module Rails
           cache Pathname.new(file).relative_path_from(root)
         end
         
-        html_files = Dir[
-          "#{root}/**/*.html"
-         ]
-        
-        html_files.each do |file|
-          cache Pathname.new(file).relative_path_from(root)
-        end  
-          
-
         network "/"
       end
     end
