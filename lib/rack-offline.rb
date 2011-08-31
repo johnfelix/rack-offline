@@ -9,7 +9,7 @@ module Rails
 
     def initialize(options = {}, app = Rails.application, &block)
       config = app.config
-      root = Rails.version < "3.1" ? config.paths.public.to_a.first : "#{Rails.root}/assets"
+      root = Rails.version < "3.1" ? config.paths.public.to_a.first : "#{Rails.root}/app/assets"
 
       block = cache_block(Pathname.new(root)) unless block_given?
 
