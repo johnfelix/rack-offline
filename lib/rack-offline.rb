@@ -34,11 +34,18 @@ module Rails
             "#{root}/images/**/*.*"]
         else 
           files = Dir[
+            "#{Rails.root}/**.css"
             "#{root}/**/*.css",
             "#{root}/**/*.js"
             ]
         end
+        
         files.each do |file|
+          if Rails.version >= "3.1"
+            file = file.split("/") 
+            file.delete_at(6)
+            file = file.join("/")
+          end
           cache Pathname.new(file).relative_path_from(root)
         end
 
