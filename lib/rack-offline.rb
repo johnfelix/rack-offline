@@ -10,9 +10,13 @@ module Rails
     def initialize(options = {}, app = Rails.application, &block)
       config = app.config
       root = Rails.version < "3.1" ? config.paths.public.to_a.first : Pathname.new("#{Rails.root}/app/assets")
-
+      
+      puts block.inspect
+      
       block = cache_block(Pathname.new(root)) unless block_given?
 
+      puts block.inspect
+      
       opts = {
         :cache => config.cache_classes,
         :root => root,
